@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "isolatedDeclarations": true,
+    "tsBuildInfoFile": ".build.tsbuildinfo"
+  },
+  "extends": "./tsconfig.base.json",
+  "include": ["src", "typings"]
+}
