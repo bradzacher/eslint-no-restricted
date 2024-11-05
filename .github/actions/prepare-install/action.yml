@@ -1,0 +1,60 @@
+description: 'Prepares the repo by installing dependencies'
+inputs:
+  node-version:
+    description: 'The node version to setup'
+    required: true
+  registry-url:
+    description: 'Define registry-url'
+    required: false
+  # NOTE: This is required for our use-case of sharing this action across multiple repos
+  working-directory:
+    default: '.'
+    description: 'Override the working directory to run the installation in'
+    required: false
+name: 'Prepare: Install'
+
+# outputs: - no outputs
+
+runs:
+  steps:
+    - name: echo github.ref
+      run: echo ${{ github.ref }}
+
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+
+    - id: pnpm-store-path
+      name: Expose pnpm store path as "$GITHUB_OUTPUT"
+      run: |
+        echo "CACHE_FOLDER=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      shell: bash
+    - id: pnpm-download-cache
+      name: Restore pnpm cache
+      uses: actions/cache@v4
+      with:
+        key: pnpm-download-cache-${{ hashFiles('pnpm-lock.yaml') }}
+        path: ${{ steps.pnpm-store-path.outputs.CACHE_FOLDER }}
+        restore-keys: |
+          pnpm-download-cache-
+
+    # Invalidated on pnpm-lock.yaml changes
+    - id: pnpm-install-state-cache
+      name: Restore pnpm install state
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-pnpm-install-state-cache-${{ hashFiles('pnpm-lock.yaml') }}
+
+        path: .pnpm/ci-cache/
+    - name: Install dependencies
+      run: |
+        pnpm install --immutable --inline-builds
+        git diff --quiet --exit-code
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+  using: 'composite'
