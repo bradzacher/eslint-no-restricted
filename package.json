@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bradzacher/eslint-plugin-no-restricted-syntax.git"
+    "url": "git+https://github.com/bradzacher/eslint-plugin-no-restricted-syntax.git"
   },
   "funding": {
     "type": "individual",
