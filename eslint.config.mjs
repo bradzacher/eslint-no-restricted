@@ -38,7 +38,7 @@ export default tseslint.config(
       regexp.configs['flat/recommended'],
       ...tseslint.configs.strictTypeChecked,
     ],
-    files: ['*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}'],
+    files: ['**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}'],
     languageOptions: {
       ecmaVersion: 'latest',
       parserOptions: {
@@ -49,19 +49,13 @@ export default tseslint.config(
     },
     name: 'local/typescript',
     rules: {
-      // These off-by-default rules work well for this repo and we like them on.
-      'logical-assignment-operators': [
+      '@eslint-community/eslint-comments/disable-enable-pair': [
         'error',
-        'always',
-        { enforceForIfStatements: true },
+        { allowWholeFile: true },
       ],
-      'operator-assignment': 'error',
-
-      // These on-by-default rules don't work well for this repo and we like them off.
-      'jsdoc/lines-before-block': 'off',
-      'no-constant-condition': 'off',
-
-      // These on-by-default rules work well for this repo if configured
+      '@typescript-eslint/array-type': ['error', { default: 'generic' }],
+      '@typescript-eslint/consistent-type-exports': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
         {
@@ -77,10 +71,18 @@ export default tseslint.config(
         'error',
         { allowBoolean: true, allowNullish: true, allowNumber: true },
       ],
+      'logical-assignment-operators': [
+        'error',
+        'always',
+        { enforceForIfStatements: true },
+      ],
       'n/no-unsupported-features/node-builtins': [
         'error',
         { allowExperimental: true },
       ],
+      'no-useless-rename': 'error',
+      'object-shorthand': 'error',
+      'operator-assignment': 'error',
       'perfectionist/sort-objects': [
         'error',
         {
@@ -89,10 +91,6 @@ export default tseslint.config(
           type: 'natural',
         },
       ],
-
-      // Stylistic concerns that don't interfere with Prettier
-      'no-useless-rename': 'error',
-      'object-shorthand': 'error',
     },
   },
 
