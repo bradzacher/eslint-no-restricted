@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "composite": true,
+    "tsBuildInfoFile": ".tools.tsbuildinfo"
+  },
+  "extends": "./tsconfig.base.json",
+  "files": [
+    "eslint.config.mjs",
+    "knip.ts",
+    "tools/build.mts",
+    "typings/eslint-plugins.d.ts"
+  ]
+}
