@@ -101,13 +101,10 @@ export default tseslint.config(
   },
   {
     extends: [tseslint.configs.disableTypeChecked],
-    files: ['**/*.md/*.ts'],
+    files: ['**/*.md/*.ts', '**/*.md/*.js'],
     name: 'local/markdown-typescript',
     rules: {
-      'n/no-missing-import': [
-        'error',
-        { allowModules: ['create-typescript-app'] },
-      ],
+      'n/no-missing-import': 'off',
     },
   },
 
