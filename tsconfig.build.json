@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "composite": true,
-    "declaration": true,
     "isolatedDeclarations": true,
+    "rootDir": "src",
     "tsBuildInfoFile": ".build.tsbuildinfo"
   },
+  "exclude": ["dist"],
   "extends": "./tsconfig.base.json",
-  "include": ["src", "typings", "tests"]
+  "include": ["src", "typings"]
 }

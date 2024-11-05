@@ -1,16 +1,16 @@
 {
-  "name": "eslint-plugin-no-restricted-syntax",
-  "version": "0.0.3",
+  "name": "eslint-no-restricted",
+  "version": "0.0.4",
   "keywords": [
     "eslint"
   ],
-  "homepage": "https://github.com/bradzacher/eslint-plugin-no-restricted-syntax",
+  "homepage": "https://github.com/bradzacher/eslint-no-restricted",
   "bugs": {
-    "url": "https://github.com/bradzacher/eslint-plugin-no-restricted-syntax/issues"
+    "url": "https://github.com/bradzacher/eslint-no-restricted/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bradzacher/eslint-plugin-no-restricted-syntax.git"
+    "url": "git+https://github.com/bradzacher/eslint-no-restricted.git"
   },
   "funding": {
     "type": "individual",
@@ -20,11 +20,23 @@
   "contributors": [
     "Brad Zacher <brad.zacher@gmail.com>"
   ],
-  "type": "module",
+  "type": "commonjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./globals": {
+      "types": "./dist/globals.d.ts",
+      "default": "./dist/globals.js"
+    },
+    "./properties": {
+      "types": "./dist/properties.d.ts",
+      "default": "./dist/properties.js"
+    },
+    "./syntax": {
+      "types": "./dist/syntax.d.ts",
+      "default": "./dist/syntax.js"
     },
     "./package.json": "./package.json"
   },
@@ -36,17 +48,19 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsx ./tools/build.mts",
+    "build": "rimraf dist .build.tsbuildinfo && tsc --project tsconfig.build.json",
     "ci": "pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run lint:knip && pnpm run lint:format && pnpm run lint:spelling",
     "format": "prettier --write .",
     "lint": "eslint .",
+    "lint:attw": "attw",
     "lint:format": "prettier --check .",
     "lint:knip": "knip",
     "lint:spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "test": "vitest",
-    "typecheck": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.tools.json --noEmit"
+    "typecheck": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.tools.json --noEmit && tsc --project tsconfig.test.json --noEmit"
   },
   "dependencies": {
+    "@arethetypeswrong/cli": "^0.16.4",
     "@typescript-eslint/utils": "^8.13.0"
   },
   "devDependencies": {
@@ -64,15 +78,12 @@
     "eslint-plugin-perfectionist": "^3.9.1",
     "eslint-plugin-regexp": "^2.6.0",
     "eslint-plugin-yml": "^1.15.0",
-    "fast-glob": "^3.3.2",
     "knip": "^5.36.2",
-    "oxc-transform": "^0.35.0",
     "prettier": "^3.3.3",
     "prettier-plugin-curly": "^0.3.1",
     "prettier-plugin-packagejson": "^2.5.3",
     "prettier-plugin-sh": "^0.14.0",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.13.0",
     "vitest": "^2.1.4"

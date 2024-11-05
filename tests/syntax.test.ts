@@ -1,10 +1,7 @@
+import createNoRestrictedSyntaxRules from '../src/syntax';
 import type { TSESTree } from '@typescript-eslint/utils';
-
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, it } from 'vitest';
-
-import { createNoRestrictedSyntaxRules } from '../src/index.js';
 
 describe('index', () => {
   function createPlugin() {
@@ -26,14 +23,9 @@ describe('index', () => {
       {
         defaultLevel: 'off',
         message: 'this message has a placeholder ->{{placeholder}}<-',
-        messageData: (node: TSESTree.Node, sourceCode) => {
-          if (node.parent?.type === AST_NODE_TYPES.VariableDeclarator) {
-            return {
-              placeholder: sourceCode.getText(node.parent.id),
-            };
-          }
+        messageData: (node: TSESTree.Literal, sourceCode) => {
           return {
-            placeholder: 'wtf',
+            placeholder: sourceCode.getText(node.parent),
           };
         },
         name: 'test3',
@@ -100,7 +92,7 @@ describe('index', () => {
           "endColumn": 20,
           "endLine": 2,
           "line": 2,
-          "message": "this message has a placeholder ->foo<-",
+          "message": "this message has a placeholder ->foo = 1<-",
           "messageId": "report",
           "nodeType": null,
           "ruleId": "no-restricted-syntax/test3",
