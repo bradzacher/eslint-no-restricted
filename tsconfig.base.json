@@ -3,7 +3,6 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "declaration": true,
-    "declarationMap": true,
     "noImplicitReturns": true,
     "outDir": "dist",
     "pretty": true,
@@ -11,7 +10,7 @@
     "strict": true,
     "types": ["node"]
   },
-  "exclude": [],
+  "exclude": ["dist"],
   "extends": ["@tsconfig/node20"],
   "include": []
 }

@@ -42,7 +42,11 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 'latest',
       parserOptions: {
-        project: ['tsconfig.build.json', 'tsconfig.tools.json'],
+        project: [
+          'tsconfig.build.json',
+          'tsconfig.tools.json',
+          'tsconfig.test.json',
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
       sourceType: 'module',
@@ -83,6 +87,13 @@ export default tseslint.config(
       'no-useless-rename': 'error',
       'object-shorthand': 'error',
       'operator-assignment': 'error',
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          groups: [],
+          type: 'natural',
+        },
+      ],
       'perfectionist/sort-objects': [
         'error',
         {
@@ -91,6 +102,16 @@ export default tseslint.config(
           type: 'natural',
         },
       ],
+    },
+  },
+  {
+    files: ['**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+      // need namespaces to export types from CJS files
+      '@typescript-eslint/no-namespace': 'off',
+      'n/no-missing-import': 'off',
+      'perfectionist/sort-switch-case': 'off',
     },
   },
 
@@ -103,9 +124,6 @@ export default tseslint.config(
     extends: [tseslint.configs.disableTypeChecked],
     files: ['**/*.md/*.ts', '**/*.md/*.js'],
     name: 'local/markdown-typescript',
-    rules: {
-      'n/no-missing-import': 'off',
-    },
   },
 
   packageJson,

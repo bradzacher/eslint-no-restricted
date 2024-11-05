@@ -1,15 +1,17 @@
-# eslint-plugin-no-restricted-syntax
+# eslint-no-restricted
 
 An eslint utility for quickly and easily creating no-restricted-syntax rules.
 
-This utility is a more powerful alternative to the [core `no-restricted-syntax` rule](https://eslint.org/docs/latest/rules/no-restricted-syntax). There are two major features you get over the core rule:
+This utility is a more powerful alternative to the core rules [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax), [`no-restricted-globals`](https://eslint.org/docs/latest/rules/no-restricted-globals), and [`no-restricted-properties`](https://eslint.org/docs/latest/rules/no-restricted-properties).
 
-(1) This utility creates one rule per selector, rather than one rule for all selectors.
+There are two major features you get with this utility over the core rules:
+
+(1) This utility creates one rule per selector/global/property, rather than having one rule for everything.
 Having multiple rules is useful for many reasons! It allows you to:
 
-- Configure each selector with a different severity
-- Easily enable or disable specific selectors on specific files/folders
-- Ensure that one disable comment does not suppress multiple selectors
+- Configure each selector/global/property with a different severity
+- Easily enable or disable specific selector/global/property on specific files/folders
+- Ensure that one disable comment does not suppress multiple selector/global/property
 
 (2) This utility allows you to create messages with placeholders.
 This is powerful because it allows you to provide more targeted, less generic messages to provide a better and more understandable DevX.
@@ -17,17 +19,19 @@ This is powerful because it allows you to provide more targeted, less generic me
 ## Installation
 
 ```sh
-npm i eslint-plugin-no-restricted-syntax
+npm i eslint-no-restricted
 ```
 
-## Usage
+## Example Usage
+
+For brevity following example shows usage of the `no-restricted-syntax` utility - but the same API is available for the `globals` and `properties` variants too.
 
 ```ts
 // eslint.config.mjs
 
-import { createNoRestrictedSyntaxRules } from 'eslint-plugin-no-restricted-syntax';
+import createNoRestrictedSyntax from 'eslint-no-restricted/syntax';
 
-const noRestrictedSyntax = createNoRestrictedSyntaxRules(
+const noRestrictedSyntax = createNoRestrictedSyntax(
   // define a single selector with a message
   {
     message: 'errors on identifiers named foo',
