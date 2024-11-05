@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "declaration": true,
+    "declarationMap": true,
+    "noImplicitReturns": true,
+    "outDir": "dist",
+    "pretty": true,
+    "sourceMap": true,
+    "strict": true,
+    "types": ["node"]
+  },
+  "exclude": [],
+  "extends": ["@tsconfig/node20"],
+  "include": []
+}

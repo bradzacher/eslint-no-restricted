@@ -1,0 +1,23 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // This matches the value configured on the autoformatter
+  "editor.rulers": [80],
+  "eslint.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+    "json",
+    "jsonc"
+  ],
+  // When enabled, will trim trailing whitespace when saving a file.
+  "files.trimTrailingWhitespace": true,
+  "javascript.preferences.importModuleSpecifier": "project-relative",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

@@ -1,0 +1,43 @@
+description: 'Prepares the repo by installing dependencies'
+inputs:
+  node-version:
+    description: 'The node version to setup'
+    required: true
+  registry-url:
+    description: 'Define registry-url'
+    required: false
+  # NOTE: This is required for our use-case of sharing this action across multiple repos
+  working-directory:
+    default: '.'
+    description: 'Override the working directory to run the installation in'
+    required: false
+name: 'Prepare: Install'
+
+# outputs: - no outputs
+
+runs:
+  steps:
+    - name: echo github.ref
+      run: echo ${{ github.ref }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        cache: 'pnpm'
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Install dependencies
+      run: |
+        pnpm install
+        git diff --quiet --exit-code
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+  using: 'composite'
