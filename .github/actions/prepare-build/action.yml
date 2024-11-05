@@ -1,0 +1,24 @@
+description: 'Prepares the repo for a job by running the build'
+name: 'Prepare: Build'
+# inputs:  - no inputs
+# outputs: - no outputs
+
+runs:
+  steps:
+    - id: build-cache
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
+        path: '**/dist/**'
+        # We don't want to share builds across runs even for the same branch
+        # because each commit can have different build artifacts and we don't
+        # want to accidentally share artifacts and poison the build output
+        restore-keys: |
+          ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
+
+    - if: steps['build-cache'].outputs.cache-hit != 'true'
+      name: Build
+      run: |
+        pnpm run build
+      shell: bash
+  using: 'composite'
