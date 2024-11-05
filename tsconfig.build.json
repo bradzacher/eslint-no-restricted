@@ -6,5 +6,5 @@
     "tsBuildInfoFile": ".build.tsbuildinfo"
   },
   "extends": "./tsconfig.base.json",
-  "include": ["src", "typings"]
+  "include": ["src", "typings", "tests"]
 }
