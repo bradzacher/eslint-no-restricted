@@ -1,6 +1,6 @@
 {
   "name": "eslint-no-restricted",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "keywords": [
     "eslint"
   ],
@@ -60,10 +60,10 @@
     "typecheck": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.tools.json --noEmit && tsc --project tsconfig.test.json --noEmit"
   },
   "dependencies": {
-    "@arethetypeswrong/cli": "^0.16.4",
     "@typescript-eslint/utils": "^8.13.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.16.4",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
     "@eslint/js": "^9.14.0",
     "@tsconfig/node20": "^20",
