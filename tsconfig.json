@@ -1,0 +1,6 @@
+{
+  "references": [
+    { "path": "./tsconfig.build.json" },
+    { "path": "./tsconfig.tools.json" }
+  ]
+}
