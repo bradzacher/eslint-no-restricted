@@ -15,6 +15,7 @@ describe('index', () => {
         selector: 'Identifier[name = "foo"]',
       },
       {
+        defaultLevel: 'warn',
         message: 'errors on the string "bar"',
         name: 'test2',
         selector: [
@@ -23,6 +24,7 @@ describe('index', () => {
         ],
       },
       {
+        defaultLevel: 'off',
         message: 'this message has a placeholder ->{{placeholder}}<-',
         messageData: (node: TSESTree.Node, sourceCode) => {
           if (node.parent?.type === AST_NODE_TYPES.VariableDeclarator) {
@@ -43,7 +45,7 @@ describe('index', () => {
   it('generates a flat config', () => {
     const plugin = createPlugin();
 
-    expect(plugin.configs).toMatchObject({
+    expect(plugin.configs).toEqual({
       recommended: {
         name: 'no-restricted-syntax/recommended',
         plugins: {
@@ -51,7 +53,7 @@ describe('index', () => {
         },
         rules: {
           'no-restricted-syntax/test1': 'error',
-          'no-restricted-syntax/test2': 'error',
+          'no-restricted-syntax/test2': 'warn',
         },
       },
     });
@@ -71,7 +73,14 @@ describe('index', () => {
     `;
 
     const linter = new Linter({ configType: 'flat' });
-    const result = linter.verify(code, plugin.configs.recommended);
+    const result = linter.verify(code, [
+      plugin.configs.recommended,
+      {
+        rules: {
+          'no-restricted-syntax/test3': 'error',
+        },
+      },
+    ]);
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -106,7 +115,7 @@ describe('index', () => {
           "messageId": "report",
           "nodeType": null,
           "ruleId": "no-restricted-syntax/test2",
-          "severity": 2,
+          "severity": 1,
         },
         {
           "column": 17,
@@ -117,7 +126,7 @@ describe('index', () => {
           "messageId": "report",
           "nodeType": null,
           "ruleId": "no-restricted-syntax/test2",
-          "severity": 2,
+          "severity": 1,
         },
         {
           "column": 17,
@@ -128,7 +137,7 @@ describe('index', () => {
           "messageId": "report",
           "nodeType": null,
           "ruleId": "no-restricted-syntax/test2",
-          "severity": 2,
+          "severity": 1,
         },
       ]
     `);

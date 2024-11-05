@@ -8,14 +8,14 @@ const require = createRequire(import.meta.url);
 type WithLoc = { loc: TSESTree.SourceLocation };
 type RuleConfig<T extends WithLoc> = {
   /**
-   * A URL for more information
-   */
-  docUrl?: string;
-  /**
    * The level to use for the rule in the generated "recommended" config
    * @default 'error'
    */
-  level?: 'error' | 'warn';
+  defaultLevel?: 'error' | 'off' | 'warn';
+  /**
+   * A URL for more information
+   */
+  docUrl?: string;
   /**
    * The message to display when reporting the error. You may define
    * placeholders in the message and use `messageData` to fill in the data for
@@ -121,10 +121,12 @@ export function createNoRestrictedSyntaxRules<T extends WithLoc>(
           // assigned below to maintain plugin referential equality
         },
         rules: Object.fromEntries(
-          rules.map(config => [
-            `${pluginPrefix}/${config.name}`,
-            config.level ?? 'error',
-          ]),
+          rules
+            .filter(config => config.defaultLevel !== 'off')
+            .map(config => [
+              `${pluginPrefix}/${config.name}`,
+              config.defaultLevel ?? 'error',
+            ]),
         ),
       },
     },
