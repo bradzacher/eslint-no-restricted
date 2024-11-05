@@ -1,7 +1,7 @@
-import { transform } from 'oxc-transform';
+import glob from 'fast-glob';
 import fs from 'node:fs';
 import path from 'node:path';
-import glob from 'fast-glob';
+import { transform } from 'oxc-transform';
 import * as rimraf from 'rimraf';
 
 const files = glob.sync('src/**/*.{ts,tsx,cts,mts}', {});
@@ -15,8 +15,8 @@ for (const filePath of files) {
   const sourceCode = fs.readFileSync(filePath, 'utf8');
   const transformed = transform(filePath, sourceCode, {
     typescript: {
-      onlyRemoveTypeImports: true,
       declaration: { stripInternal: true },
+      onlyRemoveTypeImports: true,
     },
   });
 
