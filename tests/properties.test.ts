@@ -1,5 +1,4 @@
 import createNoRestrictedPropertiesRules from '../src/properties';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, it } from 'vitest';
 
@@ -39,7 +38,7 @@ describe('index', () => {
       {
         defaultLevel: 'off',
         message: 'this message has a placeholder ->{{placeholder}}<-',
-        messageData: (node: TSESTree.MemberExpression, sourceCode) => {
+        messageData: (node, sourceCode) => {
           return {
             placeholder: sourceCode.getText(node),
           };
@@ -58,14 +57,14 @@ describe('index', () => {
 
     expect(plugin.configs).toEqual({
       recommended: {
-        name: 'no-restricted-globals/recommended',
+        name: 'no-restricted-properties/recommended',
         plugins: {
-          'no-restricted-globals': plugin,
+          'no-restricted-properties': plugin,
         },
         rules: {
-          'no-restricted-globals/test1': 'error',
-          'no-restricted-globals/test2': 'error',
-          'no-restricted-globals/test3': 'warn',
+          'no-restricted-properties/test1': 'error',
+          'no-restricted-properties/test2': 'error',
+          'no-restricted-properties/test3': 'warn',
         },
       },
     });
@@ -81,6 +80,7 @@ describe('index', () => {
       foo.bam;
       func.bind(this);
       restricted.property;
+      const { property } = restricted;
     `;
 
     const linter = new Linter({ configType: 'flat' });
@@ -88,7 +88,7 @@ describe('index', () => {
       plugin.configs.recommended,
       {
         rules: {
-          'no-restricted-globals/test4': 'error',
+          'no-restricted-properties/test4': 'error',
         },
       },
     ]);
@@ -103,7 +103,7 @@ describe('index', () => {
           "message": "errors on name "window.alert"",
           "messageId": "report",
           "nodeType": "MemberExpression",
-          "ruleId": "no-restricted-globals/test1",
+          "ruleId": "no-restricted-properties/test1",
           "severity": 2,
         },
         {
@@ -114,7 +114,7 @@ describe('index', () => {
           "message": "errors on the properties "foo.bar" and "foo.bam"",
           "messageId": "report",
           "nodeType": "MemberExpression",
-          "ruleId": "no-restricted-globals/test3",
+          "ruleId": "no-restricted-properties/test3",
           "severity": 1,
         },
         {
@@ -125,7 +125,7 @@ describe('index', () => {
           "message": "errors on the properties "foo.bar" and "foo.bam"",
           "messageId": "report",
           "nodeType": "MemberExpression",
-          "ruleId": "no-restricted-globals/test3",
+          "ruleId": "no-restricted-properties/test3",
           "severity": 1,
         },
         {
@@ -136,7 +136,7 @@ describe('index', () => {
           "message": "errors on property "bind"",
           "messageId": "report",
           "nodeType": "MemberExpression",
-          "ruleId": "no-restricted-globals/test2",
+          "ruleId": "no-restricted-properties/test2",
           "severity": 2,
         },
         {
@@ -147,7 +147,18 @@ describe('index', () => {
           "message": "this message has a placeholder ->restricted.property<-",
           "messageId": "report",
           "nodeType": "MemberExpression",
-          "ruleId": "no-restricted-globals/test4",
+          "ruleId": "no-restricted-properties/test4",
+          "severity": 2,
+        },
+        {
+          "column": 13,
+          "endColumn": 25,
+          "endLine": 8,
+          "line": 8,
+          "message": "this message has a placeholder ->{ property }<-",
+          "messageId": "report",
+          "nodeType": "ObjectPattern",
+          "ruleId": "no-restricted-properties/test4",
           "severity": 2,
         },
       ]
