@@ -161,7 +161,7 @@ function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
 }
 
 function create(...rules: Array<create.RuleConfig>): Plugin {
-  return shared.createPlugin('globals', rules, createRule);
+  return shared.createPlugin('properties', rules, createRule);
 }
 
 export = create;
