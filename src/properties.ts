@@ -57,15 +57,37 @@ function getStaticStringValue(node: TSESTree.Node) {
   return null;
 }
 function getStaticPropertyName(node: TSESTree.Node | undefined): null | string {
-  if (node?.type === AST_NODE_TYPES.MemberExpression) {
-    if (node.property.type === AST_NODE_TYPES.Identifier && !node.computed) {
-      return node.property.name;
-    }
+  let prop: null | TSESTree.Expression | TSESTree.PrivateIdentifier = null;
+  let computed = false;
+  switch (node?.type) {
+    case AST_NODE_TYPES.ChainExpression:
+      return getStaticPropertyName(node.expression);
 
-    return getStaticStringValue(node.property);
+    case AST_NODE_TYPES.Property:
+    case AST_NODE_TYPES.PropertyDefinition:
+    case AST_NODE_TYPES.MethodDefinition:
+      prop = node.key;
+      computed = node.computed;
+      break;
+
+    case AST_NODE_TYPES.MemberExpression:
+      prop = node.property;
+      computed = node.computed;
+      break;
+
+    default:
+      prop = null;
   }
 
-  return null;
+  if (prop == null) {
+    return null;
+  }
+
+  if (prop.type === AST_NODE_TYPES.Identifier && !computed) {
+    return prop.name;
+  }
+
+  return getStaticStringValue(prop);
 }
 function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
   return function create(context) {
