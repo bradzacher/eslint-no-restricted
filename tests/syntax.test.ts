@@ -1,4 +1,5 @@
 import createNoRestrictedSyntaxRules from '../src/syntax';
+import { expectPluginName } from './utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, it } from 'vitest';
@@ -133,5 +134,15 @@ describe('index', () => {
         },
       ]
     `);
+  });
+
+  it('creates a custom-named plugin', () => {
+    const plugin = createNoRestrictedSyntaxRules('no-internal-syntax', {
+      message: 'errors on identifiers named foo',
+      name: 'test-internal',
+      selector: 'Identifier[name = "foo"]',
+    });
+
+    expectPluginName(plugin, 'no-internal-syntax');
   });
 });

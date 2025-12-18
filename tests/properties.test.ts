@@ -1,4 +1,5 @@
 import createNoRestrictedPropertiesRules from '../src/properties';
+import { expectPluginName } from './utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, it } from 'vitest';
 
@@ -163,5 +164,18 @@ describe('index', () => {
         },
       ]
     `);
+  });
+
+  it('creates a custom-named plugin', () => {
+    const plugin = createNoRestrictedPropertiesRules('no-internal-properties', {
+      message: 'errors on name "internalGlobal.property"',
+      name: 'no-internal-property',
+      property: {
+        object: 'internalGlobal',
+        property: 'property',
+      },
+    });
+
+    expectPluginName(plugin, 'no-internal-properties');
   });
 });

@@ -57,8 +57,19 @@ function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
   };
 }
 
-function create(...rules: Array<create.RuleConfig>): Plugin {
-  return shared.createPlugin('globals', rules, createRule);
+function create(name: string, ...rules: Array<create.RuleConfig>): Plugin;
+function create(...rules: Array<create.RuleConfig>): Plugin;
+function create(
+  nameOrRule: create.RuleConfig | string,
+  ...rules: Array<create.RuleConfig>
+): Plugin {
+  return typeof nameOrRule === 'string'
+    ? shared.createPlugin(nameOrRule, rules, createRule)
+    : shared.createPlugin(
+        'no-restricted-globals',
+        [nameOrRule, ...rules],
+        createRule,
+      );
 }
 
 export = create;
