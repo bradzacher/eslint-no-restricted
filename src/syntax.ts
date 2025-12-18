@@ -41,8 +41,8 @@ function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
   };
 }
 
-// function create(name: string, ...rules: Array<create.RuleConfig>): Plugin;
-// function create(...rules: Array<create.RuleConfig>): Plugin;
+function create(name: string, ...rules: Array<create.RuleConfig>): Plugin;
+function create(...rules: Array<create.RuleConfig>): Plugin;
 function create(
   nameOrRule: create.RuleConfig | string,
   ...rules: Array<create.RuleConfig>
