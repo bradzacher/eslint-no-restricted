@@ -8,13 +8,13 @@ importers:
 
   .:
     dependencies:
-      '@arethetypeswrong/cli':
-        specifier: ^0.16.4
-        version: 0.16.4
       '@typescript-eslint/utils':
         specifier: ^8.13.0
         version: 8.13.0(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.3)
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: ^0.16.4
+        version: 0.16.4
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: ^4.4.1
         version: 4.4.1(eslint@9.14.0(jiti@2.4.0))
