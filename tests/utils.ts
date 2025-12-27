@@ -6,9 +6,9 @@ export function expectPluginName(plugin: Plugin, name: string): void {
 
   expect(plugin.configs.recommended.name).toBe(`${name}/recommended`);
 
-  expect(Object.keys(plugin.configs.recommended.plugins)).toEqual([name]);
+  expect(Object.keys(plugin.configs.recommended.plugins ?? {})).toEqual([name]);
 
-  Object.keys(plugin.configs.recommended.rules).forEach(ruleName => {
+  Object.keys(plugin.configs.recommended.rules ?? {}).forEach(ruleName => {
     expect(ruleName).toMatch(new RegExp(`^${name}/`));
   });
 }
