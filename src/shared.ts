@@ -11,7 +11,7 @@ export interface RuleBase<TNode> {
    */
   defaultLevel?: 'error' | 'off' | 'warn';
   /**
-   * A URL for more information
+   * A URL for more information (shown in IDEs)
    */
   docUrl?: string;
   /**
