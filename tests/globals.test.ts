@@ -1,4 +1,5 @@
 import createNoRestrictedGlobalsRules from '../src/globals';
+import { expectPluginName } from './utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, it } from 'vitest';
@@ -116,5 +117,15 @@ describe('index', () => {
         },
       ]
     `);
+  });
+
+  it('creates a custom-named plugin', () => {
+    const plugin = createNoRestrictedGlobalsRules('no-internal-globals', {
+      globalName: 'testInternalGlobal',
+      message: 'errors on name "testInternalGlobal"',
+      name: 'no-test-internal',
+    });
+
+    expectPluginName(plugin, 'no-internal-globals');
   });
 });

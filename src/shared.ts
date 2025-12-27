@@ -48,15 +48,14 @@ const packageVersion: string = require('../package.json').version;
 
 export type RuleCreateFunction = TSESLint.RuleCreateFunction<'report', []>;
 export function createPlugin<TNode, TConfig extends RuleBase<TNode>>(
-  pluginName: 'globals' | 'properties' | 'syntax',
+  pluginName: string,
   rules: Array<TConfig>,
   createRule: (config: TConfig) => RuleCreateFunction,
 ): Plugin {
-  const pluginPrefix = `no-restricted-${pluginName}`;
   const plugin = {
     configs: {
       recommended: {
-        name: `no-restricted-${pluginName}/recommended`,
+        name: `${pluginName}/recommended`,
         plugins: {
           // assigned below to maintain plugin referential equality
         },
@@ -64,14 +63,14 @@ export function createPlugin<TNode, TConfig extends RuleBase<TNode>>(
           rules
             .filter(config => config.defaultLevel !== 'off')
             .map(config => [
-              `${pluginPrefix}/${config.name}`,
+              `${pluginName}/${config.name}`,
               config.defaultLevel ?? 'error',
             ]),
         ),
       },
     },
     meta: {
-      name: `no-restricted-${pluginName}`,
+      name: pluginName,
       version: packageVersion,
     },
     rules: Object.fromEntries(
@@ -108,7 +107,7 @@ export function createPlugin<TNode, TConfig extends RuleBase<TNode>>(
     ),
   };
   plugin.configs.recommended.plugins = {
-    [pluginPrefix]: plugin,
+    [pluginName]: plugin,
   };
 
   return plugin;
