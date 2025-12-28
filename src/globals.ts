@@ -3,8 +3,11 @@ import * as shared from './shared';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 namespace create {
-  export interface RuleConfig
-    extends shared.RuleBase<TSESTree.Identifier | TSESTree.JSXIdentifier> {
+  export interface RuleConfig<TName extends string>
+    extends shared.RuleBase<
+      TSESTree.Identifier | TSESTree.JSXIdentifier,
+      TName
+    > {
     /**
      * The global name to match
      *
@@ -17,7 +20,9 @@ namespace create {
   export type CreateFn = typeof create;
 }
 
-function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
+function createRule<TName extends string>(
+  config: create.RuleConfig<TName>,
+): shared.RuleCreateFunction {
   return function create(context) {
     const globalNames = Array.isArray(config.globalName)
       ? config.globalName
@@ -57,12 +62,19 @@ function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
   };
 }
 
-function create(name: string, ...rules: Array<create.RuleConfig>): Plugin;
-function create(...rules: Array<create.RuleConfig>): Plugin;
-function create(
-  nameOrRule: create.RuleConfig | string,
-  ...rules: Array<create.RuleConfig>
-): Plugin {
+function create<TRules extends string>(
+  name: string,
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules>;
+
+function create<TRules extends string>(
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules>;
+
+function create<TRules extends string>(
+  nameOrRule: create.RuleConfig<TRules> | string,
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules> {
   return typeof nameOrRule === 'string'
     ? shared.createPlugin(nameOrRule, rules, createRule)
     : shared.createPlugin(
