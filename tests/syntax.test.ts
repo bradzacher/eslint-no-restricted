@@ -1,8 +1,8 @@
 import createNoRestrictedSyntaxRules from '../src/syntax';
 import { expectPluginName } from './utils';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
@@ -144,5 +144,42 @@ describe('index', () => {
     });
 
     expectPluginName(plugin, 'no-internal-syntax');
+  });
+
+  it('has proper types', () => {
+    const unnamedPlugin = createNoRestrictedSyntaxRules(
+      {
+        message: 'message',
+        name: 'name-1',
+        selector: 'selector',
+      },
+      {
+        message: 'message',
+        name: 'name-2',
+        selector: 'selector',
+      },
+    );
+
+    const namedPlugin = createNoRestrictedSyntaxRules(
+      'custom-plugin',
+      {
+        message: 'message',
+        name: 'name-3',
+        selector: 'selector',
+      },
+      {
+        message: 'message',
+        name: 'name-4',
+        selector: 'selector',
+      },
+    );
+
+    expectTypeOf(unnamedPlugin.rules).toMatchTypeOf<
+      Record<'name-1' | 'name-2', TSESLint.LooseRuleDefinition>
+    >();
+
+    expectTypeOf(namedPlugin.rules).toMatchTypeOf<
+      Record<'name-3' | 'name-4', TSESLint.LooseRuleDefinition>
+    >();
   });
 });

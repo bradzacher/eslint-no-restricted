@@ -2,7 +2,8 @@ import type { Plugin, WithLoc } from './shared';
 import * as shared from './shared';
 
 namespace create {
-  export interface RuleConfig extends shared.RuleBase<unknown> {
+  export interface RuleConfig<TName extends string>
+    extends shared.RuleBase<unknown, TName> {
     /**
      * The ESQuery selector to match
      * {@link https://eslint.org/docs/latest/extend/selectors}
@@ -16,7 +17,9 @@ namespace create {
   export type CreateFn = typeof create;
 }
 
-function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
+function createRule<TName extends string>(
+  config: create.RuleConfig<TName>,
+): shared.RuleCreateFunction {
   return function create(context) {
     const selectors = Array.isArray(config.selector)
       ? config.selector
@@ -41,12 +44,19 @@ function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
   };
 }
 
-function create(name: string, ...rules: Array<create.RuleConfig>): Plugin;
-function create(...rules: Array<create.RuleConfig>): Plugin;
-function create(
-  nameOrRule: create.RuleConfig | string,
-  ...rules: Array<create.RuleConfig>
-): Plugin {
+function create<TRules extends string>(
+  name: string,
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules>;
+
+function create<TRules extends string>(
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules>;
+
+function create<TRules extends string>(
+  nameOrRule: create.RuleConfig<TRules> | string,
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<string> {
   return typeof nameOrRule === 'string'
     ? shared.createPlugin(nameOrRule, rules, createRule)
     : shared.createPlugin(

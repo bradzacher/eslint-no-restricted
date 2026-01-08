@@ -16,9 +16,10 @@ namespace create {
      */
     property: string;
   }
-  export interface RuleConfig
+  export interface RuleConfig<TName extends string>
     extends shared.RuleBase<
-      TSESTree.MemberExpression | TSESTree.ObjectPattern
+      TSESTree.MemberExpression | TSESTree.ObjectPattern,
+      TName
     > {
     /**
      * The properties name to match
@@ -89,7 +90,9 @@ function getStaticPropertyName(node: TSESTree.Node | undefined): null | string {
 
   return getStaticStringValue(prop);
 }
-function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
+function createRule<TName extends string>(
+  config: create.RuleConfig<TName>,
+): shared.RuleCreateFunction {
   return function create(context) {
     const properties = Array.isArray(config.property)
       ? config.property
@@ -182,12 +185,19 @@ function createRule(config: create.RuleConfig): shared.RuleCreateFunction {
   };
 }
 
-function create(name: string, ...rules: Array<create.RuleConfig>): Plugin;
-function create(...rules: Array<create.RuleConfig>): Plugin;
-function create(
-  nameOrRule: create.RuleConfig | string,
-  ...rules: Array<create.RuleConfig>
-): Plugin {
+function create<TRules extends string>(
+  name: string,
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules>;
+
+function create<TRules extends string>(
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules>;
+
+function create<TRules extends string>(
+  nameOrRule: create.RuleConfig<TRules> | string,
+  ...rules: Array<create.RuleConfig<TRules>>
+): Plugin<TRules> {
   return typeof nameOrRule === 'string'
     ? shared.createPlugin(nameOrRule, rules, createRule)
     : shared.createPlugin(
