@@ -57,7 +57,7 @@ function getStaticStringValue(node: TSESTree.Node) {
   return null;
 }
 function getStaticPropertyName(node: TSESTree.Node | undefined): null | string {
-  let prop: null | TSESTree.Expression | TSESTree.PrivateIdentifier = null;
+  let prop: null | TSESTree.Expression | TSESTree.PrivateIdentifier;
   let computed = false;
   switch (node?.type) {
     case AST_NODE_TYPES.ChainExpression:

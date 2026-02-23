@@ -30,6 +30,7 @@
       "types": "./dist/globals.d.ts",
       "default": "./dist/globals.js"
     },
+    "./package.json": "./package.json",
     "./properties": {
       "types": "./dist/properties.d.ts",
       "default": "./dist/properties.js"
@@ -37,8 +38,7 @@
     "./syntax": {
       "types": "./dist/syntax.d.ts",
       "default": "./dist/syntax.js"
-    },
-    "./package.json": "./package.json"
+    }
   },
   "types": "./dist/index.d.ts",
   "files": [
@@ -60,24 +60,24 @@
     "typecheck": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.tools.json --noEmit && tsc --project tsconfig.test.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "^8.13.0"
+    "@typescript-eslint/utils": "^8.56.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.16.4",
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
-    "@eslint/js": "^9.14.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
+    "@eslint/js": "^10.0.1",
     "@tsconfig/node20": "^20",
     "@types/node": "^20",
     "cspell": "^8.15.7",
-    "eslint": "^9.14.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jsonc": "^2.16.0",
+    "eslint": "^10.0.1",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-jsonc": "^2.21.1",
     "eslint-plugin-markdown": "^5.1.0",
-    "eslint-plugin-n": "^17.12.0",
-    "eslint-plugin-package-json": "^0.15.4",
+    "eslint-plugin-n": "^17.24.0",
+    "eslint-plugin-package-json": "^0.15.6",
     "eslint-plugin-perfectionist": "^3.9.1",
-    "eslint-plugin-regexp": "^2.6.0",
-    "eslint-plugin-yml": "^1.15.0",
+    "eslint-plugin-regexp": "^2.10.0",
+    "eslint-plugin-yml": "^1.19.1",
     "knip": "^5.36.2",
     "prettier": "^3.3.3",
     "prettier-plugin-curly": "^0.3.1",
@@ -85,11 +85,11 @@
     "prettier-plugin-sh": "^0.14.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.13.0",
+    "typescript-eslint": "^8.56.0",
     "vitest": "^2.1.4"
   },
   "peerDependencies": {
-    "eslint": "^8.57.0 || ^9"
+    "eslint": "^8.57.0 || ^9 || ^10"
   },
   "engines": {
     "node": "^20.9.0 || >=22.0.0"

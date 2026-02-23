@@ -2,6 +2,7 @@
 
 import js from '@eslint/js';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
+import { defineConfig } from 'eslint/config';
 import prettier from 'eslint-config-prettier';
 import jsonc from 'eslint-plugin-jsonc';
 import markdown from 'eslint-plugin-markdown';
@@ -12,7 +13,7 @@ import * as regexp from 'eslint-plugin-regexp';
 import yml from 'eslint-plugin-yml';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: [
       'coverage*',
@@ -47,6 +48,7 @@ export default tseslint.config(
           'tsconfig.tools.json',
           'tsconfig.test.json',
         ],
+        // eslint-disable-next-line n/no-unsupported-features/node-builtins -- The `engine` field is for publish only.
         tsconfigRootDir: import.meta.dirname,
       },
       sourceType: 'module',
