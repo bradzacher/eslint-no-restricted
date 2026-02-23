@@ -4,7 +4,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 export interface WithLoc {
   loc: TSESTree.SourceLocation;
 }
-export interface RuleBase<TNode> {
+export interface RuleBase<TNode, TName extends string> {
   /**
    * The level to use for the rule in the generated "recommended" config
    * @default 'error'
@@ -32,14 +32,14 @@ export interface RuleBase<TNode> {
   /**
    * The name of the rule -- must be a kebab-cased-name
    */
-  name: string;
+  name: TName;
 }
-export interface Plugin {
+export interface Plugin<TRules extends string> {
   configs: {
     recommended: TSESLint.FlatConfig.Config;
   };
   meta: NonNullable<TSESLint.FlatConfig.Plugin['meta']>;
-  rules: NonNullable<TSESLint.FlatConfig.Plugin['rules']>;
+  rules: Record<TRules, TSESLint.LooseRuleDefinition>;
 }
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
@@ -47,11 +47,15 @@ export interface Plugin {
 const packageVersion: string = require('../package.json').version;
 
 export type RuleCreateFunction = TSESLint.RuleCreateFunction<'report', []>;
-export function createPlugin<TNode, TConfig extends RuleBase<TNode>>(
+export function createPlugin<
+  TNode,
+  TRules extends string,
+  TConfig extends RuleBase<TNode, TRules>,
+>(
   pluginName: string,
   rules: Array<TConfig>,
   createRule: (config: TConfig) => RuleCreateFunction,
-): Plugin {
+): Plugin<TRules> {
   const plugin = {
     configs: {
       recommended: {
@@ -110,5 +114,5 @@ export function createPlugin<TNode, TConfig extends RuleBase<TNode>>(
     [pluginName]: plugin,
   };
 
-  return plugin;
+  return plugin as never;
 }

@@ -1,7 +1,8 @@
 import createNoRestrictedPropertiesRules from '../src/properties';
 import { expectPluginName } from './utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
@@ -171,5 +172,54 @@ describe('index', () => {
     });
 
     expectPluginName(plugin, 'no-internal-properties');
+  });
+
+  it('has proper types', () => {
+    const unnamedPlugin = createNoRestrictedPropertiesRules(
+      {
+        message: 'message',
+        name: 'name-1',
+        property: {
+          object: 'object',
+          property: 'property',
+        },
+      },
+      {
+        message: 'message',
+        name: 'name-2',
+        property: {
+          object: 'object',
+          property: 'property',
+        },
+      },
+    );
+
+    const namedPlugin = createNoRestrictedPropertiesRules(
+      'custom-plugin',
+      {
+        message: 'message',
+        name: 'name-3',
+        property: {
+          object: 'object',
+          property: 'property',
+        },
+      },
+      {
+        message: 'message',
+        name: 'name-4',
+        property: {
+          object: 'object',
+          property: 'property',
+        },
+      },
+    );
+
+    expectTypeOf(unnamedPlugin.rules).toMatchTypeOf<
+      Record<'name-1' | 'name-2', TSESLint.LooseRuleDefinition>
+    >();
+
+    expectTypeOf(namedPlugin.rules).toMatchTypeOf<
+      Record<'name-3' | 'name-4', TSESLint.LooseRuleDefinition>
+    >();
   });
 });
