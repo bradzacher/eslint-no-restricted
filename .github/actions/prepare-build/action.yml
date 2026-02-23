@@ -10,7 +10,7 @@ runs:
       uses: actions/cache@v4
       with:
         key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
-        path: '**/dist/**'
+        path: './dist/**'
         # We don't want to share builds across runs even for the same branch
         # because each commit can have different build artifacts and we don't
         # want to accidentally share artifacts and poison the build output
