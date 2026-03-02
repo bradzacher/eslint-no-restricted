@@ -46,9 +46,8 @@ export interface Plugin<TRules extends string> {
 const require = createRequire(import.meta.url);
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-const packageVersion: string = (
-  require('../package.json') as { version: string }
-).version;
+const packageVersion = (require('../package.json') as { version: string })
+  .version;
 
 export type RuleCreateFunction = TSESLint.RuleCreateFunction<'report', []>;
 export function createPlugin<
