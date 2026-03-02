@@ -1,7 +1,8 @@
-import createNoRestrictedGlobalsRules from '../src/globals';
-import { expectPluginName } from './utils';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import createNoRestrictedGlobalsRules from '../src/globals.js';
+import { expectPluginName } from './utils.js';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import type { Rule } from 'eslint';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
@@ -153,12 +154,12 @@ describe('index', () => {
       },
     );
 
-    expectTypeOf(unnamedPlugin.rules).toMatchTypeOf<
-      Record<'name-1' | 'name-2', TSESLint.LooseRuleDefinition>
+    expectTypeOf(unnamedPlugin.rules).toEqualTypeOf<
+      Record<'name-1' | 'name-2', Rule.RuleModule>
     >();
 
-    expectTypeOf(namedPlugin.rules).toMatchTypeOf<
-      Record<'name-3' | 'name-4', TSESLint.LooseRuleDefinition>
+    expectTypeOf(namedPlugin.rules).toEqualTypeOf<
+      Record<'name-3' | 'name-4', Rule.RuleModule>
     >();
   });
 });

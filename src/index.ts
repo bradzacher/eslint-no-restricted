@@ -1,15 +1,16 @@
-import globals = require('./globals.js');
-import properties = require('./properties.js');
-import syntax = require('./syntax.js');
+export {
+  default as createGlobals,
+  type RuleConfig as RuleConfigGlobals,
+} from './globals.js';
 
-interface ExportsType {
-  createGlobals: globals.CreateFn;
-  createProperties: properties.CreateFn;
-  createSyntax: syntax.CreateFn;
-}
+export {
+  default as createProperties,
+  type RuleConfig as RuleConfigProperties,
+} from './properties.js';
 
-export = {
-  createGlobals: globals,
-  createProperties: properties,
-  createSyntax: syntax,
-} satisfies ExportsType as ExportsType;
+export type { Plugin, RuleBase } from './shared.js';
+
+export {
+  default as createSyntax,
+  type RuleConfig as RuleConfigSyntax,
+} from './syntax.js';

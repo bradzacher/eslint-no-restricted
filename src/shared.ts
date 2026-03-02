@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils } from '@typescript-eslint/utils';
-
+import type { Rule } from 'eslint';
+import { createRequire } from 'node:module';
 export interface WithLoc {
   loc: TSESTree.SourceLocation;
 }
@@ -39,12 +40,14 @@ export interface Plugin<TRules extends string> {
     recommended: TSESLint.FlatConfig.Config;
   };
   meta: NonNullable<TSESLint.FlatConfig.Plugin['meta']>;
-  rules: Record<TRules, TSESLint.LooseRuleDefinition>;
+  rules: Record<TRules, Rule.RuleModule>;
 }
 
+const require = createRequire(import.meta.url);
+
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-const packageVersion: string = require('../package.json').version;
+const packageVersion = (require('../package.json') as { version: string })
+  .version;
 
 export type RuleCreateFunction = TSESLint.RuleCreateFunction<'report', []>;
 export function createPlugin<

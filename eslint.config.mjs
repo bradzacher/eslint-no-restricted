@@ -109,9 +109,6 @@ export default defineConfig(
   {
     files: ['**/*.ts'],
     rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-      // need namespaces to export types from CJS files
-      '@typescript-eslint/no-namespace': 'off',
       'n/no-missing-import': 'off',
       'perfectionist/sort-switch-case': 'off',
     },

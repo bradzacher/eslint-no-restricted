@@ -20,7 +20,7 @@
   "contributors": [
     "Brad Zacher <brad.zacher@gmail.com>"
   ],
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
