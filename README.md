@@ -62,8 +62,8 @@ export interface RuleBase<TNode> {
 Each plugin has its own additional properties which allow you to configure the constructs the rule targets (see below). Each plugin has the same create function as well:
 
 ```ts
-function create(name: string, ...rules: Array<RuleConfig>): Plugin;
-function create(...rules: Array<RuleConfig>): Plugin;
+export function create(name: string, ...rules: Array<RuleConfig>): Plugin;
+export function create(...rules: Array<RuleConfig>): Plugin;
 ```
 
 You can optionally supply a custom name for the plugin. By default it will use `no-restricted-(globals|properties|syntax)` and this should be fine for most use-cases. However in some use-cases you might like to distribute your new plugin and so you want to ensure your plugin name doesn't clash with other usages of this utility. In that case you can provide a custom `name` for the plugin to avoid clashes.
