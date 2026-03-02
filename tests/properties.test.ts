@@ -1,4 +1,4 @@
-import { createProperties } from '../src/properties.js';
+import createNoRestrictedPropertiesRules from '../src/properties.js';
 import { expectPluginName } from './utils.js';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import type { Rule } from 'eslint';
@@ -6,7 +6,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
-    return createProperties(
+    return createNoRestrictedPropertiesRules(
       {
         message: 'errors on name "window.alert"',
         name: 'test1',
@@ -162,7 +162,7 @@ describe('index', () => {
   });
 
   it('creates a custom-named plugin', () => {
-    const plugin = createProperties('no-internal-properties', {
+    const plugin = createNoRestrictedPropertiesRules('no-internal-properties', {
       message: 'errors on name "internalGlobal.property"',
       name: 'no-internal-property',
       property: {
@@ -175,7 +175,7 @@ describe('index', () => {
   });
 
   it('has proper types', () => {
-    const unnamedPlugin = createProperties(
+    const unnamedPlugin = createNoRestrictedPropertiesRules(
       {
         message: 'message',
         name: 'name-1',
@@ -194,7 +194,7 @@ describe('index', () => {
       },
     );
 
-    const namedPlugin = createProperties(
+    const namedPlugin = createNoRestrictedPropertiesRules(
       'custom-plugin',
       {
         message: 'message',

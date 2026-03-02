@@ -180,16 +180,16 @@ function createRule<TName extends string>(
   };
 }
 
-export function createProperties<TRules extends string>(
+function create<TRules extends string>(
   name: string,
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-export function createProperties<TRules extends string>(
+function create<TRules extends string>(
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-export function createProperties<TRules extends string>(
+function create<TRules extends string>(
   nameOrRule: RuleConfig<TRules> | string,
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules> {
@@ -202,6 +202,6 @@ export function createProperties<TRules extends string>(
       );
 }
 
-export default createProperties;
+export default create;
 
 export type { Plugin };

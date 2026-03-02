@@ -1,4 +1,4 @@
-import { createSyntax } from '../src/syntax.js';
+import createNoRestrictedSyntaxRules from '../src/syntax.js';
 import { expectPluginName } from './utils.js';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
@@ -7,7 +7,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
-    return createSyntax(
+    return createNoRestrictedSyntaxRules(
       {
         message: 'errors on identifiers named foo',
         name: 'test1',
@@ -133,7 +133,7 @@ describe('index', () => {
   });
 
   it('creates a custom-named plugin', () => {
-    const plugin = createSyntax('no-internal-syntax', {
+    const plugin = createNoRestrictedSyntaxRules('no-internal-syntax', {
       message: 'errors on identifiers named foo',
       name: 'test-internal',
       selector: 'Identifier[name = "foo"]',
@@ -143,7 +143,7 @@ describe('index', () => {
   });
 
   it('has proper types', () => {
-    const unnamedPlugin = createSyntax(
+    const unnamedPlugin = createNoRestrictedSyntaxRules(
       {
         message: 'message',
         name: 'name-1',
@@ -156,7 +156,7 @@ describe('index', () => {
       },
     );
 
-    const namedPlugin = createSyntax(
+    const namedPlugin = createNoRestrictedSyntaxRules(
       'custom-plugin',
       {
         message: 'message',

@@ -1,4 +1,4 @@
-import { createGlobals } from '../src/globals.js';
+import createNoRestrictedGlobalsRules from '../src/globals.js';
 import { expectPluginName } from './utils.js';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
@@ -7,7 +7,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
-    return createGlobals(
+    return createNoRestrictedGlobalsRules(
       {
         globalName: 'window',
         message: 'errors on name "window"',
@@ -117,7 +117,7 @@ describe('index', () => {
   });
 
   it('creates a custom-named plugin', () => {
-    const plugin = createGlobals('no-internal-globals', {
+    const plugin = createNoRestrictedGlobalsRules('no-internal-globals', {
       globalName: 'testInternalGlobal',
       message: 'errors on name "testInternalGlobal"',
       name: 'no-test-internal',
@@ -127,7 +127,7 @@ describe('index', () => {
   });
 
   it('has proper types', () => {
-    const unnamedPlugin = createGlobals(
+    const unnamedPlugin = createNoRestrictedGlobalsRules(
       {
         globalName: 'globalName',
         message: 'message',
@@ -140,7 +140,7 @@ describe('index', () => {
       },
     );
 
-    const namedPlugin = createGlobals(
+    const namedPlugin = createNoRestrictedGlobalsRules(
       'custom-plugin',
       {
         globalName: 'globalName',

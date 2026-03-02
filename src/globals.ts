@@ -56,16 +56,16 @@ function createRule<TName extends string>(
   };
 }
 
-export function createGlobals<TRules extends string>(
+function create<TRules extends string>(
   name: string,
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-export function createGlobals<TRules extends string>(
+function create<TRules extends string>(
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-export function createGlobals<TRules extends string>(
+function create<TRules extends string>(
   nameOrRule: RuleConfig<TRules> | string,
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules> {
@@ -74,6 +74,6 @@ export function createGlobals<TRules extends string>(
     : createPlugin('no-restricted-globals', [nameOrRule, ...rules], createRule);
 }
 
-export default createGlobals;
+export default create;
 
 export type { Plugin };

@@ -46,16 +46,16 @@ function createRule<TName extends string>(
   };
 }
 
-export function createSyntax<TRules extends string>(
+function create<TRules extends string>(
   name: string,
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-export function createSyntax<TRules extends string>(
+function create<TRules extends string>(
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-export function createSyntax<TRules extends string>(
+function create<TRules extends string>(
   nameOrRule: RuleConfig<TRules> | string,
   ...rules: Array<RuleConfig<TRules>>
 ): Plugin<string> {
@@ -64,6 +64,6 @@ export function createSyntax<TRules extends string>(
     : createPlugin('no-restricted-syntax', [nameOrRule, ...rules], createRule);
 }
 
-export default createSyntax;
+export default create;
 
 export type { Plugin };
