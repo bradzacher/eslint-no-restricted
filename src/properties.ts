@@ -1,36 +1,31 @@
-import type { Plugin } from './shared';
-import * as shared from './shared';
+import type { Plugin, RuleBase, RuleCreateFunction } from './shared.js';
+import { createPlugin } from './shared.js';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-namespace create {
-  export interface RestrictedProperty {
-    /**
-     * The object name to ban from `object.property`. This is optional; if it is
-     * not provided then the `property` is disallowed for all objects.
-     */
-    object?: string;
-    /**
-     * The property name to ban from `object.property`.
-     * If `object` is not provided then this is disallowed for all objects.
-     */
-    property: string;
-  }
-  export interface RuleConfig<TName extends string>
-    extends shared.RuleBase<
-      TSESTree.MemberExpression | TSESTree.ObjectPattern,
-      TName
-    > {
-    /**
-     * The properties name to match
-     *
-     * You may pass multiple properties with an array for convenience rather
-     * than trying to merge multiple properties into one, or declaring the same
-     * message multiple times with different properties.
-     */
-    property: Array<RestrictedProperty> | RestrictedProperty;
-  }
-  export type CreateFn = typeof create;
+export interface RestrictedProperty {
+  /**
+   * The object name to ban from `object.property`. This is optional; if it is
+   * not provided then the `property` is disallowed for all objects.
+   */
+  object?: string;
+  /**
+   * The property name to ban from `object.property`.
+   * If `object` is not provided then this is disallowed for all objects.
+   */
+  property: string;
+}
+
+export interface RuleConfig<TName extends string>
+  extends RuleBase<TSESTree.MemberExpression | TSESTree.ObjectPattern, TName> {
+  /**
+   * The properties name to match
+   *
+   * You may pass multiple properties with an array for convenience rather
+   * than trying to merge multiple properties into one, or declaring the same
+   * message multiple times with different properties.
+   */
+  property: Array<RestrictedProperty> | RestrictedProperty;
 }
 
 function getStaticStringValue(node: TSESTree.Node) {
@@ -91,8 +86,8 @@ function getStaticPropertyName(node: TSESTree.Node | undefined): null | string {
   return getStaticStringValue(prop);
 }
 function createRule<TName extends string>(
-  config: create.RuleConfig<TName>,
-): shared.RuleCreateFunction {
+  config: RuleConfig<TName>,
+): RuleCreateFunction {
   return function create(context) {
     const properties = Array.isArray(config.property)
       ? config.property
@@ -185,26 +180,28 @@ function createRule<TName extends string>(
   };
 }
 
-function create<TRules extends string>(
+export function createProperties<TRules extends string>(
   name: string,
-  ...rules: Array<create.RuleConfig<TRules>>
+  ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-function create<TRules extends string>(
-  ...rules: Array<create.RuleConfig<TRules>>
+export function createProperties<TRules extends string>(
+  ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-function create<TRules extends string>(
-  nameOrRule: create.RuleConfig<TRules> | string,
-  ...rules: Array<create.RuleConfig<TRules>>
+export function createProperties<TRules extends string>(
+  nameOrRule: RuleConfig<TRules> | string,
+  ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules> {
   return typeof nameOrRule === 'string'
-    ? shared.createPlugin(nameOrRule, rules, createRule)
-    : shared.createPlugin(
+    ? createPlugin(nameOrRule, rules, createRule)
+    : createPlugin(
         'no-restricted-properties',
         [nameOrRule, ...rules],
         createRule,
       );
 }
 
-export = create;
+export default createProperties;
+
+export type { Plugin };

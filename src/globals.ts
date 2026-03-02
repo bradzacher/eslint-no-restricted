@@ -1,28 +1,22 @@
-import type { Plugin } from './shared';
-import * as shared from './shared';
+import type { Plugin, RuleBase, RuleCreateFunction } from './shared.js';
+import { createPlugin } from './shared.js';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-namespace create {
-  export interface RuleConfig<TName extends string>
-    extends shared.RuleBase<
-      TSESTree.Identifier | TSESTree.JSXIdentifier,
-      TName
-    > {
-    /**
-     * The global name to match
-     *
-     * You may pass multiple globals with an array for convenience rather than
-     * trying to merge multiple globals into one, or declaring the same message
-     * multiple times with different globals.
-     */
-    globalName: Array<string> | string;
-  }
-  export type CreateFn = typeof create;
+export interface RuleConfig<TName extends string>
+  extends RuleBase<TSESTree.Identifier | TSESTree.JSXIdentifier, TName> {
+  /**
+   * The global name to match
+   *
+   * You may pass multiple globals with an array for convenience rather than
+   * trying to merge multiple globals into one, or declaring the same message
+   * multiple times with different globals.
+   */
+  globalName: Array<string> | string;
 }
 
 function createRule<TName extends string>(
-  config: create.RuleConfig<TName>,
-): shared.RuleCreateFunction {
+  config: RuleConfig<TName>,
+): RuleCreateFunction {
   return function create(context) {
     const globalNames = Array.isArray(config.globalName)
       ? config.globalName
@@ -62,26 +56,24 @@ function createRule<TName extends string>(
   };
 }
 
-function create<TRules extends string>(
+export function createGlobals<TRules extends string>(
   name: string,
-  ...rules: Array<create.RuleConfig<TRules>>
+  ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-function create<TRules extends string>(
-  ...rules: Array<create.RuleConfig<TRules>>
+export function createGlobals<TRules extends string>(
+  ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules>;
 
-function create<TRules extends string>(
-  nameOrRule: create.RuleConfig<TRules> | string,
-  ...rules: Array<create.RuleConfig<TRules>>
+export function createGlobals<TRules extends string>(
+  nameOrRule: RuleConfig<TRules> | string,
+  ...rules: Array<RuleConfig<TRules>>
 ): Plugin<TRules> {
   return typeof nameOrRule === 'string'
-    ? shared.createPlugin(nameOrRule, rules, createRule)
-    : shared.createPlugin(
-        'no-restricted-globals',
-        [nameOrRule, ...rules],
-        createRule,
-      );
+    ? createPlugin(nameOrRule, rules, createRule)
+    : createPlugin('no-restricted-globals', [nameOrRule, ...rules], createRule);
 }
 
-export = create;
+export default createGlobals;
+
+export type { Plugin };

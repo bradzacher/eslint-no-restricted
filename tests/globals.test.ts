@@ -1,12 +1,13 @@
-import createNoRestrictedGlobalsRules from '../src/globals';
-import { expectPluginName } from './utils';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { createGlobals } from '../src/globals.js';
+import { expectPluginName } from './utils.js';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import type { Rule } from 'eslint';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
-    return createNoRestrictedGlobalsRules(
+    return createGlobals(
       {
         globalName: 'window',
         message: 'errors on name "window"',
@@ -116,7 +117,7 @@ describe('index', () => {
   });
 
   it('creates a custom-named plugin', () => {
-    const plugin = createNoRestrictedGlobalsRules('no-internal-globals', {
+    const plugin = createGlobals('no-internal-globals', {
       globalName: 'testInternalGlobal',
       message: 'errors on name "testInternalGlobal"',
       name: 'no-test-internal',
@@ -126,7 +127,7 @@ describe('index', () => {
   });
 
   it('has proper types', () => {
-    const unnamedPlugin = createNoRestrictedGlobalsRules(
+    const unnamedPlugin = createGlobals(
       {
         globalName: 'globalName',
         message: 'message',
@@ -139,7 +140,7 @@ describe('index', () => {
       },
     );
 
-    const namedPlugin = createNoRestrictedGlobalsRules(
+    const namedPlugin = createGlobals(
       'custom-plugin',
       {
         globalName: 'globalName',
@@ -153,12 +154,12 @@ describe('index', () => {
       },
     );
 
-    expectTypeOf(unnamedPlugin.rules).toMatchTypeOf<
-      Record<'name-1' | 'name-2', TSESLint.LooseRuleDefinition>
+    expectTypeOf(unnamedPlugin.rules).toEqualTypeOf<
+      Record<'name-1' | 'name-2', Rule.RuleModule>
     >();
 
-    expectTypeOf(namedPlugin.rules).toMatchTypeOf<
-      Record<'name-3' | 'name-4', TSESLint.LooseRuleDefinition>
+    expectTypeOf(namedPlugin.rules).toEqualTypeOf<
+      Record<'name-3' | 'name-4', Rule.RuleModule>
     >();
   });
 });

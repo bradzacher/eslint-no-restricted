@@ -1,4 +1,4 @@
-import type { Plugin } from '../src/shared';
+import type { Plugin } from '../src/shared.js';
 import { expect } from 'vitest';
 
 export function expectPluginName(plugin: Plugin<string>, name: string): void {

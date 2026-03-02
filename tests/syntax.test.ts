@@ -1,12 +1,13 @@
-import createNoRestrictedSyntaxRules from '../src/syntax';
-import { expectPluginName } from './utils';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { createSyntax } from '../src/syntax.js';
+import { expectPluginName } from './utils.js';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import type { Rule } from 'eslint';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
   function createPlugin() {
-    return createNoRestrictedSyntaxRules(
+    return createSyntax(
       {
         message: 'errors on identifiers named foo',
         name: 'test1',
@@ -132,7 +133,7 @@ describe('index', () => {
   });
 
   it('creates a custom-named plugin', () => {
-    const plugin = createNoRestrictedSyntaxRules('no-internal-syntax', {
+    const plugin = createSyntax('no-internal-syntax', {
       message: 'errors on identifiers named foo',
       name: 'test-internal',
       selector: 'Identifier[name = "foo"]',
@@ -142,7 +143,7 @@ describe('index', () => {
   });
 
   it('has proper types', () => {
-    const unnamedPlugin = createNoRestrictedSyntaxRules(
+    const unnamedPlugin = createSyntax(
       {
         message: 'message',
         name: 'name-1',
@@ -155,7 +156,7 @@ describe('index', () => {
       },
     );
 
-    const namedPlugin = createNoRestrictedSyntaxRules(
+    const namedPlugin = createSyntax(
       'custom-plugin',
       {
         message: 'message',
@@ -169,12 +170,12 @@ describe('index', () => {
       },
     );
 
-    expectTypeOf(unnamedPlugin.rules).toMatchTypeOf<
-      Record<'name-1' | 'name-2', TSESLint.LooseRuleDefinition>
+    expectTypeOf(unnamedPlugin.rules).toEqualTypeOf<
+      Record<'name-1' | 'name-2', Rule.RuleModule>
     >();
 
-    expectTypeOf(namedPlugin.rules).toMatchTypeOf<
-      Record<'name-3' | 'name-4', TSESLint.LooseRuleDefinition>
+    expectTypeOf(namedPlugin.rules).toEqualTypeOf<
+      Record<'name-3' | 'name-4', Rule.RuleModule>
     >();
   });
 });
