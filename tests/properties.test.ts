@@ -1,7 +1,7 @@
 import createNoRestrictedPropertiesRules from '../src/properties';
 import { expectPluginName } from './utils';
-import type { TSESLint } from '@typescript-eslint/utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {

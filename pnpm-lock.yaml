@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@typescript-eslint/types':
+        specifier: ^8.56.0
+        version: 8.56.0
       '@typescript-eslint/utils':
         specifier: ^8.56.0
         version: 8.56.0(eslint@10.0.1(jiti@2.4.0))(typescript@5.6.3)
