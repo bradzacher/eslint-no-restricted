@@ -1,7 +1,7 @@
 import createNoRestrictedSyntaxRules from '../src/syntax';
 import { expectPluginName } from './utils';
-import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import type { TSESTree } from '@typescript-eslint/types';
+import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
