@@ -1,5 +1,6 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { ESLintUtils } from '@typescript-eslint/utils';
+import * as ESLintUtils from '@typescript-eslint/utils/eslint-utils';
+import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
+import type { TSESTree } from '@typescript-eslint/types';
 
 export interface WithLoc {
   loc: TSESTree.SourceLocation;
