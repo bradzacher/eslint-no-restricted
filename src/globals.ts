@@ -1,7 +1,7 @@
 import type { Plugin } from './shared';
 import * as shared from './shared';
-import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
 import type { TSESTree } from '@typescript-eslint/types';
+import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
 
 namespace create {
   export interface RuleConfig<TName extends string>

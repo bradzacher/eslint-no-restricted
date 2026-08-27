@@ -1,8 +1,8 @@
 import createNoRestrictedGlobalsRules from '../src/globals';
 import { expectPluginName } from './utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import type { TSESTree } from '@typescript-eslint/types';
 import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
+import type { TSESTree } from '@typescript-eslint/types';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
 describe('index', () => {
